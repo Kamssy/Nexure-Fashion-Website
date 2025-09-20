@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Events - Nexure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: #000;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .top-nav li {
+            margin: 0 15px;
+        }
+
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .top-nav a:hover {
+            color: #ff6600;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #000;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 900;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+            font-size: 1.8rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #333;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 950;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 899;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* Marquee */
+        .marquee {
+            background-color: #ff6600;
+            color: white;
+            padding: 12px 0;
+            overflow: hidden;
+            position: relative;
+            margin-top: 60px;
+            font-weight: bold;
+        }
+
+        .marquee p {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2, h3 {
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: #ff6600;
+        }
+
+        /* Events */
+        .event {
+            background-color: #f9f9f9;
+            border-left: 4px solid #ff6600;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .event:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .event p {
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #ff6600;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #e55a00;
+        }
+
+        /* Past Events */
+        #past-events ul {
+            list-style: none;
+        }
+
+        #past-events li {
+            margin-bottom: 10px;
+        }
+
+        #past-events a {
+            color: #ff6600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        #past-events a:hover {
+            text-decoration: underline;
+        }
+
+        /* Social Media */
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #000;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            background-color: #ff6600;
+        }
+
+        /* Contact Section */
+        #contact ul {
+            list-style: none;
+        }
+
+        #contact li {
+            margin-bottom: 10px;
+        }
+
+        #contact a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+
+        #contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .countdown-item {
+            background-color: #000;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .countdown-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            main {
+                margin: 20px;
+                width: auto;
+            }
+            
+            .marquee {
+                margin-top: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .top-nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #000;
+                padding: 15px 0;
+            }
+            
+            .top-nav ul.show {
+                display: flex;
+            }
+            
+            .top-nav li {
+                margin: 10px 0;
+                text-align: center;
+            }
+            
+            .sidebar-toggle {
+                display: block;
+            }
+            
+            .marquee {
+                margin-top: 50px;
+                margin-left: 0;
+            }
+            
+            .event {
+                padding: 15px;
+            }
+            
+            .countdown {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            h3 {
+                font-size: 1.3rem;
+            }
+            
+            .cta-button {
+                display: block;
+                text-align: center;
+            }
+            
+            .countdown-item {
+                min-width: 50px;
+            }
+            
+            .countdown-number {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header>
+        <button class="menu-toggle">☰</button>
+        <nav class="top-nav">
+            <ul>
+                <li><a href="#upcoming-events">Upcoming Events</a></li>
+                <li><a href="#past-events">Past Events</a></li>
+                <li><a href="#social-media">Share</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle">☰</button>
+    <div class="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Nexure</h2>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="products.html"><i class="fas fa-tshirt"></i> Products</a></li>
+            <li><a href="appointments.html"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+            <li><a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a></li>
+        </ul>
+    </aside>
+
+    <!-- Marquee Section -->
+    <section class="marquee">
+        <p>🎉 Stay tuned for exciting events ahead! Follow us for updates. 🎉</p>
+    </section>
+
+    <!-- Main Content Area -->
+    <main>
+        <section id="intro">
+            <h2>Upcoming Events</h2>
+            <p>Discover our exciting lineup of events. From fashion shows to networking opportunities, there's something for everyone. Join us for these unforgettable experiences!</p>
+        </section>
+
+        <!-- Event 1 -->
+        <section class="event" id="event1">
+            <h3>Fashion Show 2025</h3>
+            <div class="countdown" data-date="2025-05-20T17:00:00">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days1">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours1">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes1">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds1">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+            <p><strong>Date & Time:</strong> May 20, 2025 - 5:00 PM</p>
+            <p><strong>Location:</strong> Nexure Headquarters, Lagos</p>
+            <p>Join us for a showcase of our latest collection. Expect celebrity appearances, live music, and exclusive discounts.</p>
+            <a href="rsvp.html" class="cta-button">RSVP Now</a>
+        </section>
+
+        <!-- Event 2 -->
+        <section class="event" id="event2">
+            <h3>Annual Gala</h3>
+            <div class="countdown" data-date="2025-07-10T19:00:00">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days2">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours2">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes2">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds2">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+            <p><strong>Date & Time:</strong> July 10, 2025 - 7:00 PM</p>
+            <p><strong>Location:</strong> Radisson Blu Hotel, Lagos</p>
+            <p>An evening of elegance and charity. A portion of the proceeds will go to community development projects. Enjoy dinner, dancing, and a live auction.</p>
+            <a href="buy-tickets.html" class="cta-button">Buy Tickets</a>
+        </section>
+
+        <!-- Event 3 -->
+        <section class="event" id="event3">
+            <h3>Business Networking Event</h3>
+            <p><strong>Date & Time:</strong> August 15, 2025 - 10:00 AM</p>
+            <p><strong>Location:</strong> Sheraton Lagos Hotel</p>
+            <p>Connect with industry leaders and like-minded professionals at this exclusive networking event. Get insights into the latest trends and expand your business opportunities.</p>
+            <a href="register.html" class="cta-button">Register Now</a>
+        </section>
+
+        <!-- Event 4 -->
+        <section class="event" id="event4">
+            <h3>Product Launch Party</h3>
+            <p><strong>Date & Time:</strong> September 5, 2025 - 6:00 PM</p>
+            <p><strong>Location:</strong> Nexure Showroom, Lekki</p>
+            <p>Be among the first to experience our newest collection! There will be live demos, special promotions, and surprise guests.</p>
+            <a href="launch-party.html" class="cta-button">Join the Launch</a>
+        </section>
+
+        <!-- Event 5 -->
+        <section class="event" id="event5">
+            <h3>Charity Auction Night</h3>
+            <p><strong>Date & Time:</strong> October 2, 2025 - 8:00 PM</p>
+            <p><strong>Location:</strong> Eko Hotel & Suites, Lagos</p>
+            <p>Support a great cause while enjoying an elegant evening. All proceeds from the auction will go towards supporting educational initiatives in local communities.</p>
+            <a href="auction-tickets.html" class="cta-button">Bid & Attend</a>
+        </section>
+
+        <!-- Event 6 -->
+        <section class="event" id="event6">
+            <h3>Fashion & Business Workshop</h3>
+            <p><strong>Date & Time:</strong> November 18, 2025 - 9:00 AM</p>
+            <p><strong>Location:</strong> Victoria Island Conference Center</p>
+            <p>Learn how to successfully blend fashion with business in our comprehensive workshop. Ideal for entrepreneurs and creatives alike!</p>
+            <a href="workshop-registration.html" class="cta-button">Register for Workshop</a>
+        </section>
+
+        <!-- Past Events -->
+        <section id="past-events">
+            <h2>Past Events</h2>
+            <p>Take a look at some of our past successful events:</p>
+            <ul>
+                <li><a href="past-event1.html">Fashion Show 2024 - Highlights</a></li>
+                <li><a href="past-event2.html">Gala 2024 - Photo Gallery</a></li>
+                <li><a href="past-event3.html">Workshop 2024 - Recap</a></li>
+            </ul>
+        </section>
+
+        <!-- Social Media Sharing -->
+        <section id="social-media">
+            <h2>Share on Social Media</h2>
+            <p>Spread the word! Share our events on social media:</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=YOUR_EVENT_URL" target="_blank" aria-label="Share on Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url=YOUR_EVENT_URL" target="_blank" aria-label="Share on Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_EVENT_URL" target="_blank" aria-label="Share on LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" aria-label="Share on Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Contact Information -->
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <p>If you have any questions about our events, feel free to reach out:</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:info@nexure.com">info@nexure.com</a></li>
+                <li><strong>Phone:</strong> <a href="tel:+234123456789">+234 123 456 789</a></li>
+                <li><strong>Address:</strong> 123 Fashion Avenue, Lagos, Nigeria</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Nexure. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile Menu and Sidebar Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const topNav = document.querySelector('.top-nav ul');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    topNav.classList.toggle('show');
+                });
+            }
+            
+            // Sidebar toggle
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            function toggleSidebar() {
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('show');
+                document.body.classList.toggle('no-scroll');
+            }
+            
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', toggleSidebar);
+            }
+            
+            if (overlay) {
+                overlay.addEventListener('click', toggleSidebar);
+            }
+            
+            // Close sidebar when clicking on a link
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('show')) {
+                        toggleSidebar();
+                    }
+                });
+            });
+            
+            // Countdown timers for events
+            function updateCountdowns() {
+                const countdowns = document.querySelectorAll('.countdown');
+                
+                countdowns.forEach(countdown => {
+                    const eventDate = new Date(countdown.getAttribute('data-date')).getTime();
+                    const now = new Date().getTime();
+                    const distance = eventDate - now;
+                    
+                    if (distance < 0) {
+                        countdown.innerHTML = "Event has passed";
+                        return;
+                    }
+                    
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                    const countdownId = countdown.parentElement.id;
+                    const idNum = countdownId.replace('event', '');
+                    
+                    document.getElementById(`days${idNum}`).textContent = days.toString().padStart(2, '0');
+                    document.getElementById(`hours${idNum}`).textContent = hours.toString().padStart(2, '0');
+                    document.getElementById(`minutes${idNum}`).textContent = minutes.toString().padStart(2, '0');
+                    document.getElementById(`seconds${idNum}`).textContent = seconds.toString().padStart(2, '0');
+                });
+            }
+            
+            // Initialize and update countdowns every second
+            updateCountdowns();
+            setInterval(updateCountdowns, 1000);
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

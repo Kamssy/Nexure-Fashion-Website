@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inquiry & Appointment</title>
+    <link rel="stylesheet" href="inquiries.css">
+    <script defer src="board.js"></script>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header>
+        <nav class="top-nav">
+            <ul>
+                <li><a href="#inquiry-form">Inquiry Form</a></li>
+                <li><a href="#appointment-form">Book an Appointment</a></li>
+                <li><a href="#faqs">FAQs</a></li> <!-- Link to FAQs -->
+            </ul>
+        </nav>
+    </header>
+
+   <!-- Sidebar -->
+   <aside class="sidebar">
+     <h2>Nexure</h2>
+      <ul>
+         <li><a href="index.html">Home</a></li>
+         <li><a href="products.html">Products</a></li>
+         <li><a href="appointments.html">Inquiries & Appointments</a></li>
+         <li><a href="events.html">Upcoming Events</a></li>
+         </ul>
+    </aside>
+
+     <!-- Marquee Section -->
+     <section class="marquee">
+        <p>🎉 Nexure is always available for you 🎉</p>
+    </section>
+
+    <!-- Main Content Area -->
+    <main>
+        <section id="inquiry-form">
+            <h2>Inquiry Form</h2>
+            <form id="inquiry-form">
+                <label for="inquiry-name">Full Name:</label>
+                <input type="text" id="inquiry-name" name="inquiry-name" required>
+
+                <label for="inquiry-email">Email Address:</label>
+                <input type="email" id="inquiry-email" name="inquiry-email" required>
+
+                <label for="inquiry-subject">Subject of Inquiry:</label>
+                <input type="text" id="inquiry-subject" name="inquiry-subject" required>
+
+                <label for="inquiry-message">Message:</label>
+                <textarea id="inquiry-message" name="inquiry-message" required></textarea>
+
+                <button type="submit">Submit Inquiry</button>
+            </form>
+            
+        </section>
+
+        <section id="appointment-form">
+            <h2>Book an Appointment</h2>
+            <form id="appointment-form">
+                <label for="appointment-name">Full Name:</label>
+                <input type="text" id="appointment-name" name="appointment-name" required>
+
+                <label for="appointment-email">Email Address:</label>
+                <input type="email" id="appointment-email" name="appointment-email" required>
+
+                <label for="appointment-phone">Phone Number:</label>
+                <input type="tel" id="appointment-phone" name="appointment-phone" required>
+
+                <label for="appointment-date">Choose a Date:</label>
+                <input type="date" id="appointment-date" name="appointment-date" required>
+
+                <label for="appointment-time">Choose a Time:</label>
+                <select id="appointment-time" name="appointment-time" required>
+                    <option value="9:00am">9:00 AM</option>
+                    <option value="10:00am">10:00 AM</option>
+                    <option value="11:00am">11:00 AM</option>
+                    <option value="1:00pm">1:00 PM</option>
+                    <option value="2:00pm">2:00 PM</option>
+                    <option value="3:00pm">3:00 PM</option>
+                </select>
+
+                <button type="submit">Book Appointment</button>
+            </form>
+        </section>
+
+        <section id="faqs">
+            <h2>Frequently Asked Questions (FAQs)</h2>
+            <div class="faq">
+                <h3 class="question">What are your working hours?</h3>
+                <p class="answer">We are open from Monday to Friday, 9:00 AM to 5:00 PM.</p>
+            </div>
+            <div class="faq">
+                <h3 class="question">How can I book an appointment?</h3>
+                <p class="answer">You can book an appointment using our online form or by calling our office directly.</p>
+            </div>
+            <div class="faq">
+                <h3 class="question">Can I reschedule my appointment?</h3>
+                <p class="answer">Yes, you can reschedule your appointment by contacting us at least 24 hours in advance.</p>
+            </div>
+            <div class="faq">
+                <h3 class="question">Do you provide any discounts for first-time customers?</h3>
+                <p class="answer">Yes, we offer a 10% discount for first-time customers. Just mention it when you book your appointment!</p>
+            </div>
+        </section>
+
+        <section id="confirmation" style="display:none;">
+            <h2>Confirmation</h2>
+            <p id="confirmation-message"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Nexure. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
